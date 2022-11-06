@@ -6,8 +6,8 @@
 
 # Motivation / Problem def:
 
-We have an combined interest in self driving cars and we would like to tackle the problem 
-of object detection on a specific set of images
+We have a combined interest in self driving cars and we would like to tackle the problem 
+of object detection on a specific set of images collected during test-runs of a self-driving car on real-world streets
 
 # Prior Work
 - YOLO
