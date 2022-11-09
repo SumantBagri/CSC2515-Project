@@ -1,0 +1,5 @@
+Simple Image classification.
+    CNN are state of the art
+    WE will try to use SVM.
+        With feature extraction or selection - Recursive feature elimination, something else???
+    Compare performance & training time of SVM models with CNN 
