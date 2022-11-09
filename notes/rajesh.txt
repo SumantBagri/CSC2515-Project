@@ -2,4 +2,6 @@ Simple Image classification.
     CNN are state of the art
     WE will try to use SVM.
         With feature extraction or selection - Recursive feature elimination, something else???
+            ??? Relief = https://medium.com/@yashdagli98/feature-selection-using-relief-algorithms-with-python-example-3c2006e18f83
+
     Compare performance & training time of SVM models with CNN 
