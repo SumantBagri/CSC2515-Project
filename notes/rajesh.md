@@ -22,13 +22,13 @@
 ---
 
 ### Different types of Regression
-- (Quantile Regression)[https://towardsdatascience.com/quantile-regression-ff2343c4a03]
+- [Quantile Regression](https://towardsdatascience.com/quantile-regression-ff2343c4a03)
 - Ridge
 - Lasso
-- (Elastic Net)[https://machinelearningmastery.com/elastic-net-regression-in-python/]
+- [Elastic Net](https://machinelearningmastery.com/elastic-net-regression-in-python/)
     - https://python.plainenglish.io/ridge-lasso-elasticnet-regressions-from-scratch-32bf9f1a03be
 - Principle Components Regression
-- (Partial Least Square)[https://www.xlstat.com/en/solutions/features/partial-least-squares-regression#:~:text=The%20Partial%20Least%20Squares%20regression,used%20to%20perfom%20a%20regression.&text=Some%20programs%20differentiate%20PLS%201,is%20only%20one%20dependent%20variable.]
+- [Partial Least Square](https://www.xlstat.com/en/solutions/features/partial-least-squares-regression#:~:text=The%20Partial%20Least%20Squares%20regression,used%20to%20perfom%20a%20regression.&text=Some%20programs%20differentiate%20PLS%201,is%20only%20one%20dependent%20variable.)
 - Support Vector Regression
 - [Negative Binomial](https://data.library.virginia.edu/getting-started-with-negative-binomial-regression-modeling/)
 - Quasi Poisson
