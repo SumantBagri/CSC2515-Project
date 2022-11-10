@@ -20,15 +20,17 @@
     - Compare performance & training time of SVM models with CNN 
 
 ---
+
 ### Different types of Regression
-- Quantile Regression
+- (Quantile Regression)[https://towardsdatascience.com/quantile-regression-ff2343c4a03]
 - Ridge
 - Lasso
-- Elastic Net
+- (Elastic Net)[https://machinelearningmastery.com/elastic-net-regression-in-python/]
+    - https://python.plainenglish.io/ridge-lasso-elasticnet-regressions-from-scratch-32bf9f1a03be
 - Principle Components Regression
-- Partial Least
+- (Partial Least Square)[https://www.xlstat.com/en/solutions/features/partial-least-squares-regression#:~:text=The%20Partial%20Least%20Squares%20regression,used%20to%20perfom%20a%20regression.&text=Some%20programs%20differentiate%20PLS%201,is%20only%20one%20dependent%20variable.]
 - Support Vector Regression
-- Negative Binomial
+- [Negative Binomial](https://data.library.virginia.edu/getting-started-with-negative-binomial-regression-modeling/)
 - Quasi Poisson
 - Cox Regre
 - Tobit Regr
@@ -45,3 +47,8 @@ Classification loss -->
 - Hinge/ Multiclass SVM loss
 - Cross entropy / Negative log likelihood
 - KL Divergence
+
+----
+
+## Proposal: Analysing different regression models using different loss functions & regularizers
+Models = Elastic Net Regr, Quasi Poisson Regr
