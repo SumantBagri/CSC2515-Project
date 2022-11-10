@@ -18,3 +18,30 @@
         - SVM + [Relief](https://medium.com/@yashdagli98/feature-selection-using-relief-algorithms-with-python-example-3c2006e18f83)
 
     - Compare performance & training time of SVM models with CNN 
+
+---
+### Different types of Regression
+- Quantile Regression
+- Ridge
+- Lasso
+- Elastic Net
+- Principle Components Regression
+- Partial Least
+- Support Vector Regression
+- Negative Binomial
+- Quasi Poisson
+- Cox Regre
+- Tobit Regr
+
+### Different Loss funcs
+Regression loss -->
+- MSE
+- MAE
+- Huber loss
+- Log Cosh loss
+- Quantile loss
+
+Classification loss -->
+- Hinge/ Multiclass SVM loss
+- Cross entropy / Negative log likelihood
+- KL Divergence
