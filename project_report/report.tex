@@ -1,0 +1,274 @@
+\documentclass{article}
+
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2022
+
+
+% ready for submission
+\usepackage[final]{neurips}
+
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%     \usepackage[preprint]{neurips_2022}
+
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_2022}
+
+
+% to avoid loading the natbib package, add option nonatbib:
+%    \usepackage[nonatbib]{neurips_2022}
+
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{amsmath}
+\usepackage{calc}
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+
+
+\title{Investigating Uncertainty in Ensemble Methods}
+
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+
+\author{%
+  David S.~Hippocampus \\
+  Department of Computer Science\\
+  Cranberry-Lemon University\\
+  Pittsburgh, PA 15213 \\
+  \texttt{hippo@cs.cranberry-lemon.edu} \\
+  % examples of more authors
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \AND
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+}
+
+
+\begin{document}
+
+
+\maketitle
+
+
+\begin{abstract}
+\center{TBD...}
+\end{abstract}
+
+
+\section{Introduction}
+
+
+\section{Motivation}
+
+
+\section{Related Work}
+
+
+\section{Theoretical Analysis}
+
+\subsection{Quantifying Uncertainty}
+
+In the domain of Bayesian inference for probabilistic models, given a dataset $\mathcal{D} = \{ x^{(i)}, y^{(i)}\}_{i=1}^N$, we try to model the parameters $\theta$ by estimating its posterior distribution using Bayes' rule:
+\begin{align}
+	\mathbb{P}(\theta|\mathcal{D}) = \frac{\mathbb{P}(\mathcal{D} | \theta)\mathbb{P}(\theta)}{\mathbb{P}(\mathcal{D})}
+\end{align}
+
+A given ensemble of models $\{ \mathbb{P}(y|x; \theta^{(m)}) \}_{m=1}^M$ is assumed to have been generated from a known (or in most cases a close approximation) of a Bayesian posterior $\mathbb{P}(\theta|\mathcal{D})$. The predictive posterior of the ensemble is then defined as follows:
+\begin{align}
+	\begin{split}
+		\mathbb{P}(y|x, \mathcal{D}) &= \mathbb{E}_{\mathbb{P}(\theta|\mathcal{D})} \left[ \mathbb{P}(y|x,\theta) \right] \\
+		\text{where, the sample mean}  &\text{estimator is used as an approximation for the expectation}\\
+		\mathbb{P}(y|x, \mathcal{D}) &\simeq \frac{1}{M} \sum\limits_{m=1}^M \mathbb{P}(y|x; \theta^{(m)})
+	\end{split}
+\end{align}
+
+Uncertainty from the predictive posterior of the ensemble can be due to two factors: 1) aleatoric (data) uncertainty or 2) epistemic (knowledge) uncertainty. We can write the total uncertainty as a sum of aleatoric and epistemic uncertainties as shown below,
+\begin{align}
+	Total \, Uncertainty = Data \, Uncertainty \quad + \quad Knowledge \, Uncertainty 
+\end{align}
+
+We define the total uncertainty as the entropy in the predictive posterior. This is defined below,
+\begin{align}
+	\mathcal{H} \left[ \mathbb{P}(y|x, \mathcal{D}) \right] = \mathbb{E}_{\mathbb{P}(y|x,\mathcal{D})} \left[ - \log{\mathbb{P}(y|x,\mathcal{D})} \right]
+\end{align}
+
+Now, the data uncertainty for a generalized predictor can be visualized as the expected prediction uncertainty of each model in the ensemble. Mathematically, this can be written as the expected entropy of each model in the ensemble as below,
+\begin{align}
+	Expected \, Data \, Uncertainty = \mathbb{E}_{\mathbb{P}(\theta|\mathcal{D})} \left[ \mathcal{H}(\mathbb{P}(y|x,\theta)) \right]
+\end{align}
+
+Therefore, we can obtain the knowledge uncertainty by rearranging (3)
+\begin{align}
+	\begin{split}
+		Knowledge \, Uncertainty &= Total \, Uncertainty - Data \, Uncertainty\\
+		Knowledge \, Uncertainty &\simeq Total \, Uncertainty - Expected \, Data \, Uncertainty\\
+		Knowledge \, Uncertainty &\simeq \mathcal{H} \left[ \mathbb{P}(y|x, \mathcal{D}) \right] - \mathbb{E}_{\mathbb{P}(\theta|\mathcal{D})} \left[ \mathcal{H}(\mathbb{P}(y|x,\theta)) \right]\\
+		\text{this is precisely } &\text{the information gain from knowing the data}\\
+		\mathcal{I}\left[ y, \theta | x, \mathcal{D} \right] &= \mathcal{H} \left[ \frac{1}{M} \sum\limits_{m=1}^M \mathbb{P}(y|x,\theta^{(m)} \right] - \frac{1}{M} \sum\limits_{m=1}^M \mathcal{H}\left[ \mathbb{P}(y|x,\theta) \right] \\
+		\mathcal{I}[y,\theta|x,\mathcal{D}] &= \\ 
+	\end{split}
+\end{align}
+
+However, we can use the above formulation only for classification tasks where predictions are actually indicative of probabilities. For regression tasks, the predictions are point values and we cannot use them as probabilistic estimates for a model. For regression tasks, uncertainty is estimated using total variation which is defined below,
+
+\subsection{Gradient Boosted Decision Trees (GBDT)}
+
+\subsection{Generating Ensembles}
+
+\textbf{SGB ensembles}
+
+\textbf{SGLB ensembles}
+
+\subsection{Metrics for evaluating uncertainty}
+
+\textbf{Prediction-Rejection Ratio (PRR)}
+
+\textbf{AUC-ROC (for out-of-domain datasets)}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsection{Figures}
+
+
+\begin{figure}
+  \centering
+  \fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
+  \caption{Sample figure caption.}
+\end{figure}
+
+
+All artwork must be neat, clean, and legible. Lines should be dark enough for
+purposes of reproduction. The figure number and caption always appear after the
+figure. Place one line space before the figure caption and one line space after
+the figure. The figure caption should be lower case (except for first word and
+proper nouns); figures are numbered consecutively.
+
+
+You may use color figures.  However, it is best for the figure captions and the
+paper body to be legible if the paper is printed in either black/white or in
+color.
+
+
+\subsection{Tables}
+
+
+All tables must be centered, neat, clean and legible.  The table number and
+title always appear before the table.  See Table~\ref{sample-table}.
+
+
+Place one line space before the table title, one line space after the
+table title, and one line space after the table. The table title must
+be lower case (except for first word and proper nouns); tables are
+numbered consecutively.
+
+
+Note that publication-quality tables \emph{do not contain vertical rules.} We
+strongly suggest the use of the \verb+booktabs+ package, which allows for
+typesetting high-quality, professional tables:
+\begin{center}
+  \url{https://www.ctan.org/pkg/booktabs}
+\end{center}
+This package was used to typeset Table~\ref{sample-table}.
+
+
+\begin{table}
+  \caption{Sample table title}
+  \label{sample-table}
+  \centering
+  \begin{tabular}{lll}
+    \toprule
+    \multicolumn{2}{c}{Part}                   \\
+    \cmidrule(r){1-2}
+    Name     & Description     & Size ($\mu$m) \\
+    \midrule
+    Dendrite & Input terminal  & $\sim$100     \\
+    Axon     & Output terminal & $\sim$10      \\
+    Soma     & Cell body       & up to $10^6$  \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+
+\section*{References}
+
+
+References follow the acknowledgments. Use unnumbered first-level heading for
+the references. Any choice of citation style is acceptable as long as you are
+consistent. It is permissible to reduce the font size to \verb+small+ (9 point)
+when listing the references.
+Note that the Reference section does not count towards the page limit.
+\medskip
+
+
+{
+\small
+
+
+[1] Alexander, J.A.\ \& Mozer, M.C.\ (1995) Template-based algorithms for
+connectionist rule extraction. In G.\ Tesauro, D.S.\ Touretzky and T.K.\ Leen
+(eds.), {\it Advances in Neural Information Processing Systems 7},
+pp.\ 609--616. Cambridge, MA: MIT Press.
+
+
+[2] Bower, J.M.\ \& Beeman, D.\ (1995) {\it The Book of GENESIS: Exploring
+  Realistic Neural Models with the GEneral NEural SImulation System.}  New York:
+TELOS/Springer--Verlag.
+
+
+[3] Hasselmo, M.E., Schnell, E.\ \& Barkai, E.\ (1995) Dynamics of learning and
+recall at excitatory recurrent synapses and cholinergic modulation in rat
+hippocampal region CA3. {\it Journal of Neuroscience} {\bf 15}(7):5249-5262.
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\appendix
+
+
+\section{Appendix}
+
+
+Optionally include extra information (complete proofs, additional experiments and plots) in the appendix.
+This section will often be part of the supplemental material.
+
+
+\end{document}
