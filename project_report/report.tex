@@ -31,6 +31,7 @@
 \usepackage{amsfonts}       % blackboard math symbols
 \usepackage{amsmath}
 \usepackage{calc}
+\usepackage{bbm}
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
 \usepackage{xcolor}         % colors
@@ -49,32 +50,26 @@
 
 
 \author{%
-  David S.~Hippocampus \\
-  Department of Computer Science\\
-  Cranberry-Lemon University\\
-  Pittsburgh, PA 15213 \\
-  \texttt{hippo@cs.cranberry-lemon.edu} \\
-  % examples of more authors
-  % \And
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-  % \AND
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-  % \And
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-  % \And
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
+  Gurman Bhullar \\
+  Department of Computer Science \\
+  University of Toronto \\
+  \texttt{gbhullar@cs.toronto.edu} \\
+  %% examples of more authors
+  \And
+  Rajesh Marudhachalam \\
+  Department of Computer Science \\
+  University of Toronto \\
+  \texttt{rajesh1804@cs.toronto.edu} \\
+  \And
+  Sarah Hindawi \\
+  Department of Computer Science \\
+  University of Toronto \\
+  \texttt{shindawi@cs.toronto.edu} \\
+  \And
+  Sumant Bagri \\
+  Department of Computer Science \\
+  University of Toronto \\
+  \texttt{sbagri@cs.toronto.edu} \\
 }
 
 
@@ -111,14 +106,14 @@ A given ensemble of models $\{ \mathbb{P}(y|x; \theta^{(m)}) \}_{m=1}^M$ is assu
 \begin{align}
 	\begin{split}
 		\mathbb{P}(y|x, \mathcal{D}) &= \mathbb{E}_{\mathbb{P}(\theta|\mathcal{D})} \left[ \mathbb{P}(y|x,\theta) \right] \\
-		\text{where, the sample mean}  &\text{estimator is used as an approximation for the expectation}\\
-		\mathbb{P}(y|x, \mathcal{D}) &\simeq \frac{1}{M} \sum\limits_{m=1}^M \mathbb{P}(y|x; \theta^{(m)})
+		\text{where, the sample mean}  &\text{estimator is used as an approximation for the expectation} \\
+		\mathbb{P}(y|x, \mathcal{D}) &\simeq \frac{1}{M} \sum\limits_{m=1}^M \mathbb{P}(y|x; \theta^{(m)}) \\
 	\end{split}
 \end{align}
 
 Uncertainty from the predictive posterior of the ensemble can be due to two factors: 1) aleatoric (data) uncertainty or 2) epistemic (knowledge) uncertainty. We can write the total uncertainty as a sum of aleatoric and epistemic uncertainties as shown below,
 \begin{align}
-	Total \, Uncertainty = Data \, Uncertainty \quad + \quad Knowledge \, Uncertainty 
+	\text{Total Uncertainty = Data Uncertainty + Knowledge Uncertainty}
 \end{align}
 
 We define the total uncertainty as the entropy in the predictive posterior. This is defined below,
@@ -128,147 +123,164 @@ We define the total uncertainty as the entropy in the predictive posterior. This
 
 Now, the data uncertainty for a generalized predictor can be visualized as the expected prediction uncertainty of each model in the ensemble. Mathematically, this can be written as the expected entropy of each model in the ensemble as below,
 \begin{align}
-	Expected \, Data \, Uncertainty = \mathbb{E}_{\mathbb{P}(\theta|\mathcal{D})} \left[ \mathcal{H}(\mathbb{P}(y|x,\theta)) \right]
+	\text{Expected Data Uncertainty} = \mathbb{E}_{\mathbb{P}(\theta|\mathcal{D})} \left[ \mathcal{H}(\mathbb{P}(y|x,\theta)) \right]
 \end{align}
 
 Therefore, we can obtain the knowledge uncertainty by rearranging (3)
 \begin{align}
 	\begin{split}
-		Knowledge \, Uncertainty &= Total \, Uncertainty - Data \, Uncertainty\\
-		Knowledge \, Uncertainty &\simeq Total \, Uncertainty - Expected \, Data \, Uncertainty\\
-		Knowledge \, Uncertainty &\simeq \mathcal{H} \left[ \mathbb{P}(y|x, \mathcal{D}) \right] - \mathbb{E}_{\mathbb{P}(\theta|\mathcal{D})} \left[ \mathcal{H}(\mathbb{P}(y|x,\theta)) \right]\\
+		\text{Knowledge Uncertainty} &= \text{Total Uncertainty} - \text{Data Uncertainty}\\
+		\text{Knowledge Uncertainty} &\simeq \text{Total Uncertainty} - \text{Expected Data Uncertainty}\\
+		\text{Knowledge Uncertainty} &\simeq \mathcal{H} \left[ \mathbb{P}(y|x, \mathcal{D}) \right] - \mathbb{E}_{\mathbb{P}(\theta|\mathcal{D})} \left[ \mathcal{H}(\mathbb{P}(y|x,\theta)) \right]\\
 		\text{this is precisely } &\text{the information gain from knowing the data}\\
-		\mathcal{I}\left[ y, \theta | x, \mathcal{D} \right] &= \mathcal{H} \left[ \frac{1}{M} \sum\limits_{m=1}^M \mathbb{P}(y|x,\theta^{(m)} \right] - \frac{1}{M} \sum\limits_{m=1}^M \mathcal{H}\left[ \mathbb{P}(y|x,\theta) \right] \\
-		\mathcal{I}[y,\theta|x,\mathcal{D}] &= \\ 
+		\mathcal{I}\left[ y, \theta | x, \mathcal{D} \right] &= \mathcal{H} \left[ \frac{1}{M} \sum\limits_{m=1}^M \mathbb{P}(y|x,\theta^{(m)} \right] - \frac{1}{M} \sum\limits_{m=1}^M \mathcal{H}\left[ \mathbb{P}(y|x,\theta) \right]
 	\end{split}
 \end{align}
 
 However, we can use the above formulation only for classification tasks where predictions are actually indicative of probabilities. For regression tasks, the predictions are point values and we cannot use them as probabilistic estimates for a model. For regression tasks, uncertainty is estimated using total variation which is defined below,
+\begin{align}
+		\mathbb{V}_{p(y|x, \mathcal{D})}[y] &= \mathbb{V}_{p(y|x, \mathcal{D})}[\mathbb{E}_{p(y|x, \mathcal{D})}[y]] + \mathbb{P}_{p(\theta|\mathcal{D})}[\mathbb{V}_{p(y|x,\theta)}[y]] \\
+		\mathbb{V}_{p(y|x, \mathcal{D})}[y] &\simeq \frac{1}{M} \sum\limits_{m=1}^M \left[ \left( \sum\limits_{m-1}^M \frac{\mu_m}{M} \right) - \mu_m \right]^2 + \frac{1}{M} \sum\limits_{m=1}^M \sigma_m^2 \quad , \quad \{ \mu_m, \sigma_m \} = f(x; \theta^{(m)})
+\end{align}
+
+The parameters, $\{ \mu_m , \sigma_m \}$ are estimated by the training algorithm that models a normal distribution over the target $y$ given features $x$ by optimizing the negative log likelihood for $\mathbb{P}(y|x, \theta)$. This is mathematically presented as follows,
+\begin{align}
+	\begin{split}
+		F^{(t)}(x) &: X \to \mathbb{R}^2 \Rightarrow \left\{ \mu_m^{(t)},\sigma_m^{(t)} \right\} \\
+		\text{such} &\text{ that, } \\
+		\mathbb{P}(y|x,\theta^{(t)}) &= \mathcal{N}\left( y|\mu_m^{(t)},\sigma_m^{(t)} \right), \text{ where,} \\
+		\hat{\theta}^{(t)} &= \arg \min_{\theta} \mathbb{E}_{\mathcal{D}}[-\log{p(y|x, \theta)}] =  \arg \min_{\theta} \left\{ - \frac{1}{N} \sum\limits_{i=1}^N \log{\mathbb{P}(y^{(i)}|x^{(i)},\theta)} \right\} \\
+	\end{split}
+\end{align}
+
+Using these uncertainty measures, we can formulate a thresholding-based binary classification problem where the predictor/detector $\mathcal{I}_T(x)$ takes in a new input $\textbf{x}$ and assigns a label 1 (uncertain prediction) if the uncertainty measure $\mathcal{H}(x)$ is above a threshold $T$ and label 0 (confident prediction) otherwise. This is presented, mathematically, as below,
+\begin{align}
+	\mathcal{I}_T(x) = 	\left\{
+		\begin{array}{ll}
+			1  & ,\mathcal{H}(x) > T\\
+			0  & ,\mathcal{H}(x) \le T 
+		\end{array}
+	\right.
+\end{align}
 
 \subsection{Gradient Boosted Decision Trees (GBDT)}
 
+Given a dataset $\mathcal{D}$ and a loss function $L : \mathbb{R}^2 \to \mathbb{R}$, the gradient boosting algorithm iteratively constructs a model $F : X \to \mathbb{R}$ to minimize the empirical risk $\mathcal{L}(F|\mathcal{D}) = \mathbb{E}_{\mathcal{D}} [L(F(x),y)]$ \citet{friedman}. A weak learner $h^{(t)}$ is chosen at each time-step $(t)$ from a family of functions $\mathcal{H}$ and the model is updated as follows,
+\begin{align}
+	F^{(t)}(x) &= F^{(t-1)}(x) + \epsilon \cdot h^{(t)}(x) \\
+	\text{such} &\text{ that, } \notag \\
+	h^{(t)} &= \arg \min_{h \in \mathcal{H}} \mathbb{E}_{\mathcal{D}} \left[ \left( - \left. \frac{\partial{\mathcal{L}(y,s)}}{\partial{s}} \right|_{s = F^{(t-1)}(x)} - h(x) \right)^2 \right]
+\end{align}
+Here, $\epsilon$ is the learning rate for the model $F$. For the GBDT ensemble the weak learners are decision trees defined using a set of parameters $\theta^{(t)}$ such that $h(x, \phi^{(t)}) = \sum\limits_{j=1}^{d} \phi_{j}^{(t)} \textbf{1}_{x \in R_{j}}$. The ensemble is constructed by summing over all the decision trees
+
 \subsection{Generating Ensembles}
+
+One of the most important requirements for calculating uncertainty is ensemble models is that each model in the ensemble should be sampled from a posterior distribution. $\mathbb{P}(\theta | \mathcal{D})$. Stochastic Gradient Boosting (SGB) and Stochastic Gradient Langevin Boosting (SGLB) 
 
 \textbf{SGB ensembles}
 
+SGB ensemble of GBDTs are generated by subsampling the dataset $\mathcal{D}$ at each iteration  of training. A randomly subsampled dataset $\mathcal{D'} \subset \mathcal{D}$ is generated either using bootstrap or uniformly randomly. The fraction of the dataset sampled is called the \textit{sample rate}. The sampling is done independently resulting in an ensemble of independent models $\{ \theta^{(m)} \}_{m=1}^M$.
+
+The model updates are done using (10) and (11).
+
 \textbf{SGLB ensembles}
+
+SGLB combines gradient boosting along with Langevin dynamics \citet{raginsky} to achieve convergence to global optimum even for non-convex loss functions. The algorithm has two main differences compared to SGB \cite{sglb}
+\begin{align}
+	\text{First, } &\text{Gaussian noise is added to the SE calculation} \notag \\
+	h^{(t)} &= \arg \min_{h \in \mathcal{H}} \mathbb{E}_{\mathcal{D}} \left[ \left( \left. \frac{\partial{\mathcal{L}(y,s)}}{\partial{s}} \right|_{s = F^{(t-1)}(x)} - h(x) + v \right)^2 \right], v \sim \mathcal{N}\left( 0, \frac{2}{\beta_{\epsilon}} \textbf{I}\right) \\
+	\text{Second, } & \notag \\
+	F^{(t)}(x) &= (1-\gamma\epsilon)F^{(t-1)}(x) + \epsilon \cdot h^{(t)}(x, \phi^{(t)})
+\end{align}
+Here, $\beta$ is called the diffusion temperature and helps in controlling the random exploration induced by $v$. The random exploration is what helps SGLB achieve global optimum
+
+\textbf{Optimizers and Training Metrics}
+
+\textbf{\underline{Classification}}
+
+The LogLoss optimizer is used for training the classification models using SGB and SGLB algorithms. This is defined as follows,
+\begin{align}
+	\mathcal{L}\left(y,\{ \mathbb{P}(y|x; \theta^{(m)}) \}_{m=1}^M \right)_{LogLoss} = - \frac{\sum\limits_{m=1}^M \left\{ w_m\left(t\log\left[\mathbb{P}(y|x; \theta^{(m)})\right] + (1-t)\log\left[ 1 - \mathbb{P}(y|x; \theta^{(m)}\right]\right) \right\}}{\sum\limits_{i=m}^M w_m}
+\end{align}
+
+The $0-1$ Loss is used as the evaluation metric during training and testing
+
+\textbf{\underline{Regression}}
+
+For regression, the RMSEWithUncertainty optimizer is used. This is described below,
+\begin{align}
+	\mathcal{L}\left(y,\{ \mathbb{P}(y|x; \theta^{(m)}) \}_{m=1}^M \right)_{\text{RMSEWithUncertainty}} =-\frac{\sum\limits_{i=1}^N \left\{ w_m \log\left[ \mathcal{N}(y|a_{m,0},e^{2a_{m,1}}) \right] \right\}}{\sum\limits_{m=1}^M w_m} \notag
+\end{align}
+\begin{align}
+	\mathcal{L}_{\text{RMSEWithUncertainty}} = \frac{1}{2}\log(2\pi) + \frac{\sum\limits_{m=1}^M \left\{ w_m\left(a_{m,0} + \frac{1}{2}e^{-2a_{m,1}}(t-a_{m,0})^2\right) \right\}}{\sum\limits_{m=1}^M w_m}
+\end{align}
+
+Here $a_{m,0}$ is the mean prediction ($\mu_m$) and $a_{m,1}$ is the $\log(\sigma_m)$ prediction such that the model $m$ is sampled from $\mathcal{N}(y|\mu_m,\sigma_m^2) = \frac{1}{\sqrt{2\pi\sigma_m^2}}\exp\left( -\frac{(y-\mu_m)^2}{2\sigma^2} \right)$
+
+The RMSE score is used as the evaluation metric during training and testing
 
 \subsection{Metrics for evaluating uncertainty}
 
-\textbf{Prediction-Rejection Ratio (PRR)}
+It is important to know whether the prediction uncertainty from an ensemble (as computed using methods stated above) is able to provide any meaningful insights on predictions: Whether the model will make an error in prediction or whether it will classify it correctly.
 
 \textbf{AUC-ROC (for out-of-domain datasets)}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
-\subsection{Figures}
+OOD detection is done using a dataset consisting of both in-domain ($\mathcal{I} \in \mathcal{D}_{in}$) and out-of-domain ($\mathcal{O} \in \mathcal{D}_{out}$) datapoints. Points belonging to $\mathcal{I}$ are labeled as 1 while points in $\mathcal{O}$ are labeled as 0. Therefore the model for the ensemble becomes $F : X \to \{0,1\}$. The model is trained on the training dataset and its predictions $\mathcal{P}$ are collected from the test dataset ($\mathcal{D}_{test}$) with true labels $\mathcal{T}$. The strategy is to then evaluate the \textit{true positive rate (tpr)} and the \textit{false positive rates (fpr)} as follows
+\begin{align}
+	\begin{split}
+		tpr = \frac{\sum_{x \in \mathcal{D}_{test}} \mathcal{I}_T(x| \mathcal{T}(x) = 0)}{\sum_{x \in \mathcal{D}_{test}} \mathbbm{1}\left\{ \mathcal{T}(x) = 0\right\}} \\
+		fpr  = \frac{\sum_{x \in \mathcal{D}_{test}} \mathcal{I}_T(x|\mathcal{T}(x) = 1)}{\sum_{x \in \mathcal{D}_{test}} \mathbbm{1}\left\{ \mathcal{T}(x) = 1\right\}} \\
+	\end{split}
+\end{align}
+where $\mathcal{I}_T$ is the detector/predictor as defined in (4.1)
 
+Subsequently, we plot the ROC curvce as: \text{tpr} vs \text{fpr}, and compute the area under the curve (AUC). The higher the value of AUC-ROC the better is the out-of-domain detection.
 
-\begin{figure}
-  \centering
-  \fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
-  \caption{Sample figure caption.}
-\end{figure}
+\textbf{Prediction-Rejection Ratio (PRR)}
 
+For a classification problem, the measure of uncertainty provides a means to label model predictions as certain or uncertain. Ideally, the goal is to be able to detect all the inputs which the model has misclassified with a label of "uncertain prediction". If the detector $\mathcal{I}_T$ (for a given uncertaintly threshold $T$), is able to achieve this then the model can choose not to provide any prediction for these inputs, or pass them over to an "oracle" (human) as "rejected-for-prediction". This can be visualized as a rejection curve $\mathcal{R}$ on the percentage of data points in $f * N(\mathcal{D}_{test}) : f \in [0,1]$
 
-All artwork must be neat, clean, and legible. Lines should be dark enough for
-purposes of reproduction. The figure number and caption always appear after the
-figure. Place one line space before the figure caption and one line space after
-the figure. The figure caption should be lower case (except for first word and
-proper nouns); figures are numbered consecutively.
+The base error ($e_{base}$) in classification is defined as the error after the model($F$) (and the detector $\mathcal{I}_T$) have gone through the whole test dataset $\mathcal{D}_{test}$. We consider two boundary cases for the detector $\mathcal{I}_T$,
+\begin{itemize}
+	\item[\textbf{\underline{Case 1:}}] Detector is completely unreliable always producing useless estimates for uncertainty ($\mathcal{R}_{rand}$)
+	\item[\textbf{\underline{Case 2:}}] Detector is perfect and always bigger for a misclassification than for a correct classification. In this case, the curve will represent the oracle curve (where all uncertain misclassifications are given to the oracle to classify) ($\mathcal{R}_{orc}$)
+\end{itemize}
+Any other detector would lie between the above two boundary cases and is denoted as $\mathcal{R}_{uns}$
 
+$\mathcal{R}_{rand}$ is a straight line from $e_{base}$ at 0\% rejection to 0 at 100\% rejection as the rejections are random:
+\begin{align}
+	\mathcal{R}_{rand} - 0 &= \frac{e_{base} - 0}{0 - 1} \times (f - 1) \\
+	\mathcal{R}_{rand} &= (1 - f) \times e_{base}
+\end{align}
 
-You may use color figures.  However, it is best for the figure captions and the
-paper body to be legible if the paper is printed in either black/white or in
-color.
+$\mathcal{R}_{rand}$ is a straight line from $e_{base}$ at 0\% rejection to 0 at the percentage of misclassification $\left( N_{misclassify} = \sum_{i=1}^{N(\mathcal{D}_{test})} \mathbbm{1} [y \ne F(x)] \Rightarrow f' = \frac{\sum_{i=1}^{N(\mathcal{D}_{test})} \mathbbm{1} [y \ne F(x)]}{N(\mathcal{D}_{test})} \right)$ as the "perfect" detector will have no need to reject any correctly classfied datapoints:
+\begin{align}
+	\mathcal{R}_{orc} - 0 &= \frac{e_{base} - 0}{0 - f'} \times (f - f') \\
+	\mathcal{R}_{rand} &= \left\{
+		\begin{array}{ll}
+			e_{base} \times (1 - \frac{f}{f'})  & ,f < f' \\ \\
+			0  & ,1 \ge f \ge f' 
+		\end{array}
+	\right. 
+\end{align}
 
+The quality of th rejection curve is assesed by considering the \textit{ratio} of the area between $\mathcal{R}_{uns}$ and $\mathcal{R}_{random}$ and is called the \textit{Prediction-Rejection-Ratio (PRR)} as shown below,
+\begin{align}
+	PRR = \frac{AUC({R}_{random}) - AUC({R}_{orc})}{AUC({R}_{uns}) - AUC({R}_{orc})}
+\end{align}
 
-\subsection{Tables}
+A higher value of PRR indicates that the detector is closer to the oracle in terms of classification error rate and is more certain about the misclassified labels.
 
+\section{Experimental Setup}
 
-All tables must be centered, neat, clean and legible.  The table number and
-title always appear before the table.  See Table~\ref{sample-table}.
+\section{Results and Discussion}
 
-
-Place one line space before the table title, one line space after the
-table title, and one line space after the table. The table title must
-be lower case (except for first word and proper nouns); tables are
-numbered consecutively.
-
-
-Note that publication-quality tables \emph{do not contain vertical rules.} We
-strongly suggest the use of the \verb+booktabs+ package, which allows for
-typesetting high-quality, professional tables:
-\begin{center}
-  \url{https://www.ctan.org/pkg/booktabs}
-\end{center}
-This package was used to typeset Table~\ref{sample-table}.
-
-
-\begin{table}
-  \caption{Sample table title}
-  \label{sample-table}
-  \centering
-  \begin{tabular}{lll}
-    \toprule
-    \multicolumn{2}{c}{Part}                   \\
-    \cmidrule(r){1-2}
-    Name     & Description     & Size ($\mu$m) \\
-    \midrule
-    Dendrite & Input terminal  & $\sim$100     \\
-    Axon     & Output terminal & $\sim$10      \\
-    Soma     & Cell body       & up to $10^6$  \\
-    \bottomrule
-  \end{tabular}
-\end{table}
-
-
-\section*{References}
-
-
-References follow the acknowledgments. Use unnumbered first-level heading for
-the references. Any choice of citation style is acceptable as long as you are
-consistent. It is permissible to reduce the font size to \verb+small+ (9 point)
-when listing the references.
-Note that the Reference section does not count towards the page limit.
-\medskip
-
-
-{
-\small
-
-
-[1] Alexander, J.A.\ \& Mozer, M.C.\ (1995) Template-based algorithms for
-connectionist rule extraction. In G.\ Tesauro, D.S.\ Touretzky and T.K.\ Leen
-(eds.), {\it Advances in Neural Information Processing Systems 7},
-pp.\ 609--616. Cambridge, MA: MIT Press.
-
-
-[2] Bower, J.M.\ \& Beeman, D.\ (1995) {\it The Book of GENESIS: Exploring
-  Realistic Neural Models with the GEneral NEural SImulation System.}  New York:
-TELOS/Springer--Verlag.
-
-
-[3] Hasselmo, M.E., Schnell, E.\ \& Barkai, E.\ (1995) Dynamics of learning and
-recall at excitatory recurrent synapses and cholinergic modulation in rat
-hippocampal region CA3. {\it Journal of Neuroscience} {\bf 15}(7):5249-5262.
-}
-
+\section{Conclusions}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\appendix
-
-
-\section{Appendix}
-
-
-Optionally include extra information (complete proofs, additional experiments and plots) in the appendix.
-This section will often be part of the supplemental material.
+\bibliography{report}  % .bib
 
 
 \end{document}
